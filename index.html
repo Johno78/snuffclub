@@ -1,64 +1,134 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Snuff Club 2026</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<meta name="description" content="Snuff Club 2026 scoreboard, checked daily.">
+<meta name="theme-color" content="#0d0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Snuff Club">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
 <style>
-/* Layout: a printed entry sheet. Red masthead, a scoreboard line, then the list in ruled columns like the paper original. */
+/* Layout: a dark candlelit wall. Every name is a candle; a confirmed death is a snuffed one with a curl of smoke. */
 :root{
-  --paper:#fbfaf8;
-  --ink:#1b1a19;
-  --muted:#6d6a66;
-  --rule:#d9d5cf;
-  --red:#c4161c;
-  --dead-bg:#f6e3e1;
-  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  color-scheme:dark;
+  --bg:#0d0a0a;
+  --panel:#171212;
+  --line:#2c2222;
+  --ink:#f1e9df;
+  --muted:#9d9087;
+  --red:#ff3b30;
+  --red-deep:#7d0f12;
+  --flame:#ffb347;
+  --f-title:"Bebas Neue","Arial Narrow",Impact,sans-serif;
+  --f-name:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --f-body:"Barlow",Arial,Helvetica,sans-serif;
 }
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#161514;--ink:#efece8;--muted:#9a958f;--rule:#34312e;--red:#ff5a5f;--dead-bg:#3a1f20;color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#161514;--ink:#efece8;--muted:#9a958f;--rule:#34312e;--red:#ff5a5f;--dead-bg:#3a1f20;color-scheme:dark;
-}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;padding-inline:16px;padding-block:28px 48px}
-.wrap{max-width:980px;margin-inline:auto;min-width:0}
-h1{font-family:var(--f-display);font-weight:700;font-size:clamp(2.6rem,9vw,4.6rem);line-height:.95;letter-spacing:.01em;text-transform:uppercase;color:var(--red);margin:0;text-wrap:balance}
-.score{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 22px;margin-block:18px 6px;padding-block:14px;border-block:2px solid var(--ink)}
-.count{font-family:var(--f-display);font-weight:700;font-size:clamp(3rem,12vw,5.5rem);line-height:1;font-variant-numeric:tabular-nums}
-.count small{font-size:.4em;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-left:.35em}
-.meta{color:var(--muted);font-size:.9rem;min-width:0}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:radial-gradient(900px 520px at 50% -80px,#3a0c0e 0%,rgba(58,12,14,0) 70%),var(--bg);background-color:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;padding-inline:16px;padding-block:calc(env(safe-area-inset-top,0px) + 26px) calc(env(safe-area-inset-bottom,0px) + 56px);min-height:100vh}
+.wrap{max-width:1000px;margin-inline:auto;min-width:0}
+
+/* masthead */
+.mast{display:flex;align-items:center;gap:clamp(14px,4vw,28px);flex-wrap:wrap}
+.mast svg{width:clamp(72px,18vw,124px);height:auto;flex:none;overflow:visible}
+h1{font-family:var(--f-title);font-weight:400;font-size:clamp(3.4rem,15vw,7.4rem);line-height:.88;letter-spacing:.02em;margin:0;text-transform:uppercase;color:var(--ink);text-shadow:0 0 18px rgba(255,59,48,.55),0 0 48px rgba(255,59,48,.28);min-width:0}
+h1 em{font-style:normal;color:var(--red)}
+.tag{margin:6px 0 0;font-family:var(--f-name);font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-size:.85rem}
+
+/* scoreboard */
+.board{margin-top:26px;padding:18px clamp(14px,3vw,26px) 20px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 0 0 1px rgba(255,59,48,.06),0 18px 50px rgba(0,0,0,.5)}
+.row{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 24px}
+.count{font-family:var(--f-title);font-size:clamp(4.6rem,22vw,9rem);line-height:.82;color:var(--red);text-shadow:0 0 22px rgba(255,59,48,.65),0 0 60px rgba(255,59,48,.3);font-variant-numeric:tabular-nums}
+.count small{font-size:.28em;color:var(--muted);text-shadow:none;letter-spacing:.08em;margin-left:.3em}
+.meta{color:var(--muted);font-size:.92rem;text-align:right;min-width:0}
 .meta b{color:var(--ink);font-weight:600}
-h2{font-family:var(--f-display);font-weight:600;font-size:1.15rem;letter-spacing:.08em;text-transform:uppercase;margin:30px 0 8px}
-.deaths{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
-.deaths li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;padding-block:12px;border-bottom:1px solid var(--rule)}
-.deaths .n{font-family:var(--f-display);font-weight:700;font-size:1.5rem;text-transform:uppercase;line-height:1.1}
+.ticks{display:grid;grid-template-columns:repeat(44,1fr);gap:3px;margin-top:18px}
+.ticks i{display:block;height:14px;border-radius:2px;background:#2a2020}
+.ticks i.on{background:var(--red);box-shadow:0 0 8px var(--red)}
+
+h2{font-family:var(--f-name);font-weight:700;font-size:1.05rem;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:34px 0 12px;display:flex;align-items:center;gap:14px}
+h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--line),transparent)}
+
+/* confirmed */
+.none{margin:0;padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+.deaths{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.deaths li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2px 14px;align-items:center;padding:12px 14px;background:var(--panel);border:1px solid var(--red-deep);border-radius:12px;box-shadow:0 0 22px rgba(255,59,48,.12)}
+.deaths .n{font-family:var(--f-name);font-weight:700;font-size:1.55rem;text-transform:uppercase;line-height:1.1;overflow-wrap:anywhere}
 .deaths .d{color:var(--muted);font-size:.9rem;font-variant-numeric:tabular-nums;text-align:right}
-.deaths .s{grid-column:1/-1;font-size:.85rem;color:var(--muted)}
+.deaths .s{grid-column:2/-1;font-size:.85rem;color:var(--muted)}
 .deaths .s a{color:var(--ink)}
-.empty{color:var(--muted);padding-block:14px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:0}
-.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
-.grid li{font-family:var(--f-display);font-weight:600;font-size:1.2rem;text-transform:uppercase;letter-spacing:.02em;padding:7px 10px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0;overflow-wrap:anywhere}
-.grid li.dead{background:var(--dead-bg);color:var(--red);text-decoration:line-through;text-decoration-thickness:2px}
-.foot{margin-top:28px;color:var(--muted);font-size:.85rem}
+
+/* the wall of candles */
+.grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:8px}
+.grid li{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:9px 12px 9px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;font-family:var(--f-name);font-weight:600;font-size:1.18rem;letter-spacing:.03em;text-transform:uppercase;overflow-wrap:anywhere;transition:border-color .2s,transform .2s}
+.grid li:hover{border-color:#5a2a2a;transform:translateY(-1px)}
+.grid li.dead{color:#7d7068;border-color:var(--red-deep);background:#120d0d}
+.grid li.dead span.nm{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}
+
+/* flame */
+.wick{position:relative;flex:none;width:14px;height:26px}
+.wick::before{content:"";position:absolute;left:50%;bottom:0;width:2px;height:6px;margin-left:-1px;background:#6b5a4d;border-radius:1px}
+.flame{position:absolute;left:50%;bottom:5px;width:11px;height:19px;margin-left:-5.5px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 78%,#fff6d6 0%,var(--flame) 45%,#ff5a1f 100%);box-shadow:0 0 10px 2px rgba(255,150,60,.55),0 0 22px 6px rgba(255,90,30,.25);transform-origin:50% 100%;animation:flick 1.6s ease-in-out infinite}
+.grid li:nth-child(3n) .flame{animation-duration:1.3s;animation-delay:-.4s}
+.grid li:nth-child(3n+1) .flame{animation-duration:1.9s;animation-delay:-.9s}
+@keyframes flick{0%,100%{transform:scale(1,1) rotate(-2deg)}25%{transform:scale(.94,1.07) rotate(2deg)}50%{transform:scale(1.04,.95) rotate(-1deg)}75%{transform:scale(.96,1.05) rotate(2deg)}}
+.dead .flame{display:none}
+.dead .wick::after{content:"";position:absolute;left:50%;bottom:6px;width:8px;height:18px;margin-left:-4px;border-radius:50%;background:radial-gradient(ellipse,rgba(190,184,178,.55),rgba(190,184,178,0) 70%);filter:blur(1.5px);animation:smoke 3.2s ease-out infinite}
+.dead .wick::before{background:#ff3b30;box-shadow:0 0 6px #ff3b30}
+@keyframes smoke{0%{transform:translate(0,4px) scale(.6);opacity:.9}100%{transform:translate(4px,-14px) scale(1.5);opacity:0}}
+
+/* header candle */
+.big .flame2{transform-box:fill-box;transform-origin:50% 100%;animation:flick 1.7s ease-in-out infinite}
+.foot{margin-top:34px;color:var(--muted);font-size:.85rem;text-align:center}
+
+@media (prefers-reduced-motion:reduce){.flame,.big .flame2,.dead .wick::after{animation:none}}
+@media (max-width:420px){.ticks{grid-template-columns:repeat(22,1fr)}.meta{text-align:left}}
 </style>
-
-</head><body>
+</head>
+<body>
 <div class="wrap">
-  <h1>Snuff Club 2026</h1>
-  <div class="score">
-    <div class="count" id="count">0<small>of 88</small></div>
-    <div class="meta" id="meta"></div>
-  </div>
+  <header class="mast">
+    <svg class="big" viewBox="0 0 120 170" aria-hidden="true">
+      <defs>
+        <radialGradient id="fl" cx="50%" cy="78%" r="70%"><stop offset="0" stop-color="#fff6d6"/><stop offset=".45" stop-color="#ffb347"/><stop offset="1" stop-color="#ff5a1f"/></radialGradient>
+        <filter id="gl" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="7"/></filter>
+      </defs>
+      <ellipse cx="60" cy="28" rx="26" ry="30" fill="#ff7a2a" opacity=".45" filter="url(#gl)"/>
+      <path class="flame2" d="M60 4C74 24 80 36 80 48C80 60 71 68 60 68C49 68 40 60 40 48C40 36 46 24 60 4Z" fill="url(#fl)"/>
+      <rect x="58" y="64" width="4" height="22" rx="2" fill="#3a2e28"/>
+      <rect x="30" y="84" width="60" height="82" rx="8" fill="#eee5d6"/>
+      <rect x="30" y="84" width="60" height="14" rx="8" fill="#faf4e9"/>
+      <rect x="39" y="90" width="9" height="30" rx="4.5" fill="#faf4e9"/>
+      <rect x="74" y="90" width="8" height="18" rx="4" fill="#faf4e9"/>
+      <rect x="76" y="86" width="14" height="80" rx="6" fill="#8a6f5c" opacity=".28"/>
+    </svg>
+    <div>
+      <h1>Snuff <em>Club</em> 2026</h1>
+      <p class="tag">Who's next</p>
+    </div>
+  </header>
 
-  <h2>Confirmed</h2>
+  <section class="board">
+    <div class="row">
+      <div class="count" id="count">0<small>of 88</small></div>
+      <div class="meta" id="meta"></div>
+    </div>
+    <div class="ticks" id="ticks" aria-hidden="true"></div>
+  </section>
+
+  <h2>Snuffed out</h2>
   <div id="confirmed"></div>
 
   <h2>The list</h2>
   <ul class="grid" id="grid"></ul>
 
-  <p class="foot">Checked once a day against major news sources. A name is only crossed off once the death is confirmed, never on rumour.</p>
+  <p class="foot">Checked once a day against major news sources. A name is only snuffed once the death is confirmed, never on rumour.</p>
 </div>
 
 <script type="application/json" id="state">{"lastChecked":null,"deaths":[]}</script>
@@ -70,30 +140,33 @@ h2{font-family:var(--f-display);font-weight:600;font-size:1.15rem;letter-spacing
   var deaths=state.deaths||[];
   var key=function(s){return String(s).toLowerCase().replace(/[^a-z]/g,'')};
   var deadMap={};deaths.forEach(function(d){deadMap[key(d.name)]=d});
+  function mk(tag,txt,cls){var e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e}
+  function wick(){var w=mk('span',null,'wick');w.appendChild(mk('span',null,'flame'));return w}
 
-  document.getElementById('count').innerHTML='';
-  var c=document.getElementById('count');
-  c.appendChild(document.createTextNode(String(deaths.length)));
-  var sm=document.createElement('small');sm.textContent='of '+NAMES.length;c.appendChild(sm);
+  var total=NAMES.length,n=deaths.length;
+  var c=document.getElementById('count');c.textContent=String(n);
+  c.appendChild(mk('small','of '+total));
 
   var meta=document.getElementById('meta');
-  function mk(tag,txt,cls){var e=document.createElement(tag);if(txt!=null)e.textContent=txt;if(cls)e.className=cls;return e}
   if(state.lastChecked){
     meta.appendChild(document.createTextNode('Last checked '));
     meta.appendChild(mk('b',state.lastChecked));
   }else{
     meta.appendChild(document.createTextNode('First check runs '));
     meta.appendChild(mk('b','4 October, 11:25'));
-    meta.appendChild(document.createTextNode(' and covers every death so far in 2026.'));
   }
 
+  var ticks=document.getElementById('ticks');
+  for(var i=0;i<total;i++){var t=document.createElement('i');if(i<n)t.className='on';ticks.appendChild(t)}
+
   var conf=document.getElementById('confirmed');
-  if(!deaths.length){
-    conf.appendChild(mk('p','Nobody yet. Confirmed deaths will appear here with the date, age and source.','empty'));
+  if(!n){
+    conf.appendChild(mk('p','Every candle is still lit. Confirmed deaths appear here with the date, age and source.','none'));
   }else{
     var ul=mk('ul',null,'deaths');
     deaths.slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))}).forEach(function(d){
       var li=mk('li');
+      var w=wick();li.className='dead';li.appendChild(w);
       li.appendChild(mk('span',d.name,'n'));
       li.appendChild(mk('span',[d.date,d.age!=null&&d.age!==''?'aged '+d.age:''].filter(Boolean).join(' · '),'d'));
       if(d.source){
@@ -109,38 +182,14 @@ h2{font-family:var(--f-display);font-weight:600;font-size:1.15rem;letter-spacing
   }
 
   var grid=document.getElementById('grid');
-  NAMES.forEach(function(n){
-    var li=mk('li',n);
-    if(deadMap[key(n)])li.className='dead';
+  NAMES.forEach(function(name){
+    var li=document.createElement('li');
+    if(deadMap[key(name)])li.className='dead';
+    li.appendChild(wick());
+    li.appendChild(mk('span',name,'nm'));
     grid.appendChild(li);
   });
 })();
 </script>
-<script>
-/* Standalone extras: tap a name to cross it off by hand; saved in this browser only. */
-(function(){
-  var KEY='snuff-club-2026-manual',saved=[];
-  try{saved=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
-  var grid=document.getElementById('grid'),count=document.getElementById('count');
-  var total=grid.children.length;
-  function render(){
-    var n=0;
-    Array.prototype.forEach.call(grid.children,function(li){
-      var on=li.classList.contains('dead')||saved.indexOf(li.textContent)>-1;
-      li.classList.toggle('dead',on);if(on)n++;
-    });
-    count.firstChild.nodeValue=String(n);
-  }
-  Array.prototype.forEach.call(grid.children,function(li){
-    li.style.cursor='pointer';
-    li.addEventListener('click',function(){
-      var t=li.textContent,k=saved.indexOf(t);
-      if(k>-1){saved.splice(k,1);li.classList.remove('dead')}else{saved.push(t);li.classList.add('dead')}
-      try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}
-      render();
-    });
-  });
-  render();
-})();
-</script>
-</body></html>
+</body>
+</html>
