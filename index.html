@@ -69,6 +69,9 @@ h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--li
 .grid li{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:9px 12px 9px 10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;font-family:var(--f-name);font-weight:600;font-size:1.18rem;letter-spacing:.03em;text-transform:uppercase;overflow-wrap:anywhere;transition:border-color .2s,transform .2s}
 .grid li:hover{border-color:#5a2a2a;transform:translateY(-1px)}
 .grid li.dead{color:#7d7068;border-color:var(--red-deep);background:#120d0d}
+.txt{display:flex;flex-direction:column;min-width:0}
+.own{font-family:var(--f-body);font-weight:500;font-size:.72rem;letter-spacing:.06em;color:var(--flame);text-transform:none;line-height:1.2;margin-top:1px}
+.dead .own{color:var(--red)}
 .grid li.dead span.nm{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}
 
 /* flame */
@@ -135,6 +138,7 @@ h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--li
 <script>
 (function(){
   var NAMES=["Johnny Mathis","Sheila Hancock","Yoko Ono","Douglas Hurd","Herb Alpert","Graham Kerr","James Bolam","Susan Hampshire","Bill Wyman","Vanessa Redgrave","Tom Courtenay","Engelbert Humperdinck","Tippi Hedren","Virginia McKenna","Wendy Craig","Claire Bloom","Nanette Newman","Richard Wilson","William Roache","Joan Collins","Willie Nelson","Barbara Knox","Bill Cosby","Derek Jacobi","Jane Fonda","Shirley MacLaine","Imelda Marcos","Robert Duvall","Stuart Hall","Woody Allen","Judi Dench","Morgan Freeman","Phyllida Law","Warren Beatty","Tom Baker","Ursula Andress","Dustin Hoffman","Jack Nicholson","William Shatner","Kim Novak","Judy Parfitt","Frankie Valli","Princess Alexandra","Gary Player","Amanda Barrie","Dick Van Dyke","Clint Eastwood","Josef Fritzl","Michael Caine","Rupert Murdoch","Ellen Burstyn","Shirley Bassey","Sophia Loren","Roman Polanski","Julian Glover","Robert Wagner","Harriet Andersson","Petula Clark","Eileen Atkins","Anthony Hopkins","Julie Andrews","Buzz Aldrin","Ridley Scott","Edward Fox","Joan Bakewell","Anne Reid","Dennis Skinner","Mary Berry","Michael Aspel","Pat Boone","Michael Heseltine","Jim Dale","Tommy Steele","Annette Crosbie","Angie Dickinson","Judd Hirsch","Brian Blessed","Thelma Barlow","Sian Phillips","Shani Wallis","Barbara Eden","Akihito","Eileen Derbyshire","Tom Skerritt","David Attenborough","Bernie Ecclestone","Len Deighton","Edward Duke of Kent"];
+  var OWNERS={"Dennis Skinner":"Abbie O'Brien","Mary Berry":"John O'Brien","Harriet Andersson":"Les Marsden","Petula Clark":"Tyler Marsden","Eileen Atkins":"Shannon","Vanessa Redgrave":"Connie Cain","Tom Courtenay":"Kevin Cain"};
   var state={lastChecked:null,deaths:[]};
   try{state=JSON.parse(document.getElementById('state').textContent)}catch(e){}
   var deaths=state.deaths||[];
@@ -169,11 +173,12 @@ h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--li
       var w=wick();li.className='dead';li.appendChild(w);
       li.appendChild(mk('span',d.name,'n'));
       li.appendChild(mk('span',[d.date,d.age!=null&&d.age!==''?'aged '+d.age:''].filter(Boolean).join(' · '),'d'));
-      if(d.source){
+      if(d.source||OWNERS[d.name]){
         var s=mk('span',null,'s');
-        if(/^https?:\/\//.test(d.sourceUrl||'')){
+        if(OWNERS[d.name])s.appendChild(document.createTextNode('Held by '+OWNERS[d.name]+(d.source?' \u00b7 ':'')));
+        if(!d.source){}else if(/^https?:\/\//.test(d.sourceUrl||'')){
           var a=document.createElement('a');a.href=d.sourceUrl;a.target='_blank';a.rel='noopener';a.textContent=d.source;s.appendChild(a);
-        }else{s.textContent=d.source}
+        }else{s.appendChild(document.createTextNode(d.source))}
         li.appendChild(s);
       }
       ul.appendChild(li);
@@ -186,7 +191,10 @@ h2::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--li
     var li=document.createElement('li');
     if(deadMap[key(name)])li.className='dead';
     li.appendChild(wick());
-    li.appendChild(mk('span',name,'nm'));
+    var tx=mk('span',null,'txt');
+    tx.appendChild(mk('span',name,'nm'));
+    if(OWNERS[name])tx.appendChild(mk('span',OWNERS[name]+(deadMap[key(name)]?' \u00b7 1 point':''),'own'));
+    li.appendChild(tx);
     grid.appendChild(li);
   });
 })();
