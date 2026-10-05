@@ -1,0 +1,32 @@
+name: Daily check
+
+on:
+  schedule:
+    - cron: "30 10 * * *"   # 10:30 UTC, about 11:30 UK time in summer
+  workflow_dispatch:         # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-check
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Update last checked and any new deaths
+        run: python scripts/update_status.py index.html
+      - name: Save changes
+        run: |
+          git config user.name "snuffclub-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Daily check" || echo "nothing to commit"
+          git pull --rebase origin main
+          git push
