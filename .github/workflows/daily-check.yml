@@ -2,7 +2,7 @@ name: Daily check
 
 on:
   schedule:
-    - cron: "30 10 * * *"   # 10:30 UTC, about 11:30 UK time in summer
+    - cron: "17 8 * * *"    # 08:17 UTC (09:17 UK in summer, 08:17 in winter). Off the busy :00/:30 slots, which GitHub often delays by hours
   workflow_dispatch:         # lets you run it by hand from the Actions tab
 
 permissions:
