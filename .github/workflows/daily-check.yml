@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "17 8 * * *"    # 08:17 UTC (09:17 UK in summer, 08:17 in winter). Off the busy :00/:30 slots, which GitHub often delays by hours
   workflow_dispatch:         # lets you run it by hand from the Actions tab
+  push:                      # also runs when this file is changed, so Claude can start a run
+    branches: [main]
+    paths: ['.github/workflows/daily-check.yml']
 
 permissions:
   contents: write
